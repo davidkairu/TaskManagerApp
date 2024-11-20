@@ -1,0 +1,38 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Task Manager</h1>
+
+    <!-- Add the logged-in user's name -->
+    <p>Welcome, {{ session['username'] }}! <a href="/logout">Logout</a></p>
+
+    <form method="POST" action="/">
+        <input type="text" name="task" placeholder="Enter a task" required>
+        <select name="priority" required>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
+        </select>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <h2>Tasks (Sorted by Priority):</h2>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.name }} - Priority: {{ task.priority }}
+                {% if task.completed %}
+                    <span>(Completed)</span>
+                {% else %}
+                    <a href="/complete/{{ task.id }}">Mark as Completed</a>
+                {% endif %}
+                <a href="/edit/{{ task.id }}">Edit</a>
+                <a href="/delete/{{ task.id }}">Remove</a>
+                        </li>
+        {% endfor %}
+    </ul>
+</body>
